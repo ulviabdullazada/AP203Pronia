@@ -422,6 +422,7 @@
     <script src="~/admin/js/vendor/chartjs-plugin-rounded-bar.min.js"></script>
     <script src="~/admin/js/vendor/jquery.barrating.min.js"></script>
     <!-- Vendor Scripts End -->
+    @RenderSection("scripts", false)
     <!-- Template Base Scripts Start -->
     <script src="font/CS-Line/csicons.min.js"></script>
     <script src="~/admin/js/base/helpers.js"></script>
@@ -432,7 +433,6 @@
     <script src="~/admin/js/base/init.js"></script>
     <!-- Template Base Scripts End -->
     <!-- Page Specific Scripts Start -->
-    @RenderSection("scripts",false)
     <!-- Page Specific Scripts End -->
 </body>
 </html>

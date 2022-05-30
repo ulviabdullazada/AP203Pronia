@@ -156,8 +156,12 @@
                         <div class="card-body pt-0 pb-0 sh-21 sh-md-8">
                             <div class="row g-0 h-100 align-content-center">
                                 <div class="col-11 col-md-1 d-flex flex-column justify-content-center mb-2 mb-md-0 h-md-100 position-relative">
-                                    <div class="text-muted text-small d-md-none">Id</div>
-                                    <a href="Orders.Detail.html" class="text-truncate h-100 d-flex align-items-center">@item.Id</a>
+                                    <div class="text-muted text-small d-md-none">Image</div>
+                                    @if (item.ProductImages.Where(pi => pi.IsMain == true).FirstOrDefault() != null)
+                                    {
+                                        <img src="~/assets/images/product/@item.ProductImages.Where(pi=>pi.IsMain==true).FirstOrDefault().Image" style="height:100%" alt="Alternate Text" />
+                                    }
+                                    @*<a href="Orders.Detail.html" class="text-truncate h-100 d-flex align-items-center">@item.Id</a>*@
                                 </div>
                                 <div class="col-6 col-md-1 d-flex flex-column justify-content-center mb-2 mb-md-0">
                                     <div class="text-muted text-small d-md-none">Name</div>
@@ -195,7 +199,7 @@
                                     </div>
                                 </div>
                                 <div class="col-1 d-flex flex-row mb-2 mb-lg-0 align-items-center order-2 order-lg-last justify-content-lg-center">
-                                    <a asp-action="Update" asp-route-id="@item.Id" class="btn btn-outline-primary mx-lg-1">Edit</a>
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-primary mx-lg-1">Edit</a>
                                     <span type="button" class="btn btn-outline-danger mx-lg-1" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="@item.Id">Delete</span>
                                 </div>
                             </div>

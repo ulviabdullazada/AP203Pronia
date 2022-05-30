@@ -154,3 +154,7 @@ C:\Users\ULVI\Desktop\AP203 Backend\Geco\Geco\obj\Debug\netcoreapp3.1\Razor\Area
 C:\Users\ULVI\Desktop\AP203 Backend\Geco\Geco\obj\Debug\netcoreapp3.1\Razor\Areas\Manage\Views\Slider\Update.cshtml.g.cs
 C:\Users\ULVI\Desktop\AP203 Backend\Geco\Geco\obj\Debug\netcoreapp3.1\Razor\Areas\Manage\Views\Product\Index.cshtml.g.cs
 C:\Users\ULVI\Desktop\AP203 Backend\Geco\Geco\obj\Debug\netcoreapp3.1\Razor\Areas\Manage\Views\Product\Create.cshtml.g.cs
+C:\Users\ULVI\Desktop\AP203 Backend\Geco\Geco\obj\Debug\netcoreapp3.1\Razor\Areas\Manage\Views\Product\Edit.cshtml.g.cs
+C:\Users\ULVI\Desktop\AP203 Backend\Geco\Geco\obj\Debug\netcoreapp3.1\Razor\Areas\Manage\Views\Shared\_ValidationPartial.cshtml.g.cs
+C:\Users\ULVI\Desktop\AP203 Backend\Geco\Geco\obj\Debug\netcoreapp3.1\Razor\Views\Product\Index.cshtml.g.cs
+C:\Users\ULVI\Desktop\AP203 Backend\Geco\Geco\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_ProductPartial.cshtml.g.cs

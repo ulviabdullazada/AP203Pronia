@@ -23,8 +23,10 @@ namespace Geco.Utilies.File
         {
             string fileName = Guid.NewGuid().ToString() + file.FileName;
             string path = Path.Combine(savePath, fileName);
-            FileStream stream = new FileStream(path, FileMode.Create);
-            await file.CopyToAsync(stream);
+            using (FileStream stream = new FileStream(path, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
             return fileName;
         }
         public static void DeleteFile(string path)

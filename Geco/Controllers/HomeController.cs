@@ -23,7 +23,7 @@ namespace Geco.Controllers
             {
                 Sliders = await _context.Sliders.ToListAsync(),
                 Categories = await _context.Categories.ToListAsync(),
-                Products = await _context.Products.Include(p=> p.ProductImages).Include(p=>p.Category).Take(8).ToListAsync()
+                Products = await _context.Products.Include(p=> p.ProductImages).Include(p=>p.Category).OrderByDescending(p=>p.Id).Take(8).ToListAsync()
             };
             return View(homeVM);
         }

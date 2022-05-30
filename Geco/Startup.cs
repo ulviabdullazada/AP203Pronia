@@ -1,4 +1,5 @@
 using Geco.DAL;
+using Geco.Utilies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -57,6 +59,7 @@ namespace Geco
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+            Constant.ImageUrl = Path.Combine(env.WebRootPath, "assets","images");
         }
     }
 }
