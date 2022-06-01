@@ -119,7 +119,8 @@
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active" id="featured" role="tabpanel" aria-labelledby="featured-tab">
                         <div class="product-item-wrap row">
-                            @await Html.PartialAsync("_ProductPartial", Model.Products);
+                            @await Component.InvokeAsync("Product",new { take = 6, skip=4 }) 
+                            @*@await Html.PartialAsync("_ProductPartial", Model.Products);*@
                         </div>
                     </div>
                 </div>

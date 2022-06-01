@@ -14,5 +14,6 @@ namespace Geco.DAL
         public DbSet<ProductImage> ProductImages { get; set; }
         public DbSet<Color> Colors{ get; set; }
         public DbSet<ProductColor> ProductColors { get; set; }
+        public DbSet<Setting> Settings{ get; set; }
     }
 }

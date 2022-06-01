@@ -158,3 +158,6 @@ C:\Users\ULVI\Desktop\AP203 Backend\Geco\Geco\obj\Debug\netcoreapp3.1\Razor\Area
 C:\Users\ULVI\Desktop\AP203 Backend\Geco\Geco\obj\Debug\netcoreapp3.1\Razor\Areas\Manage\Views\Shared\_ValidationPartial.cshtml.g.cs
 C:\Users\ULVI\Desktop\AP203 Backend\Geco\Geco\obj\Debug\netcoreapp3.1\Razor\Views\Product\Index.cshtml.g.cs
 C:\Users\ULVI\Desktop\AP203 Backend\Geco\Geco\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_ProductPartial.cshtml.g.cs
+C:\Users\ULVI\Desktop\AP203 Backend\Geco\Geco\obj\Debug\netcoreapp3.1\Razor\Views\Product\Cart.cshtml.g.cs
+C:\Users\ULVI\Desktop\AP203 Backend\Geco\Geco\obj\Debug\netcoreapp3.1\Razor\Views\Shared\Components\Product\Default.cshtml.g.cs
+C:\Users\ULVI\Desktop\AP203 Backend\Geco\Geco\obj\Debug\netcoreapp3.1\Razor\Views\Shared\Components\LayoutHeader\Default.cshtml.g.cs

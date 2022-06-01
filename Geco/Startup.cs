@@ -1,4 +1,5 @@
 using Geco.DAL;
+using Geco.Services;
 using Geco.Utilies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -27,10 +28,15 @@ namespace Geco
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddSession(opt=> {
+                opt.IdleTimeout = TimeSpan.FromSeconds(5);
+            });
             services.AddDbContext<AppDbContext>(opt=>
             {
                 opt.UseSqlServer(Configuration["ConnectionStrings:default"]);
             });
+            services.AddScoped<LayoutServices>();
+            services.AddHttpContextAccessor();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,6 +50,8 @@ namespace Geco
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+            app.UseSession();
             app.UseStaticFiles();
 
             app.UseRouting();

@@ -1,11 +1,12 @@
 ﻿using Geco.DAL;
 using Geco.Models;
+using Geco.ViewModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Geco.Controllers
 {
@@ -18,9 +19,8 @@ namespace Geco.Controllers
         }
         public IActionResult Index()
         {
-            IQueryable <Product> products = _context.Products.Where(p => p.IsDeleted == false).AsQueryable();
-            ViewBag.ProductCount = products.Count();
-            return View(products.Take(8).Include(p=>p.ProductImages).Include(p=>p.Category));
+            //ViewBag.ProductCount = products.Count();
+            return View();
         }
         public IActionResult LoadMore(int skip)
         {
@@ -37,5 +37,59 @@ namespace Geco.Controllers
                                                 .Include(p => p.ProductImages)
                                                 .Include(p => p.Category));
         }
+        public IActionResult Cart() 
+        {
+            List<BasketVM> basket = JsonConvert.DeserializeObject<List<BasketVM>>(Request.Cookies["Basket"]);
+            List<CartVM> cart = new List<CartVM>();
+            foreach (var item in basket)
+            {
+                Product dbProduct = _context.Products.Include(p => p.ProductImages).SingleOrDefault(p=>p.Id == item.ProductId);
+                if (dbProduct == null) continue;
+                cart.Add(new CartVM { 
+                    ProductId = dbProduct.Id,
+                    Count = item.Count,
+                    ImageUrl= dbProduct.ProductImages.FirstOrDefault(p=>p.IsMain).Image,
+                    Name = dbProduct.Name,
+                    Price = dbProduct.Price,
+                    IsActive = dbProduct.StockCount > item.Count ? true:false
+                });
+            }
+            return View(cart);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Basket(int? id)
+        {
+            if (id == null) return BadRequest();
+            Product dbProduct = _context.Products.Find(id);
+            if (dbProduct == null) return NotFound();
+            List<BasketVM> basketItems = new List<BasketVM>();
+            BasketVM item = new BasketVM() {
+                ProductId = dbProduct.Id,
+                Count = 1
+            };
+            if (Request.Cookies["Basket"] != null)
+            {
+                basketItems = JsonConvert.DeserializeObject<List<BasketVM>>(Request.Cookies["basket"]);
+            }
+            if (basketItems.Find(bi => bi.ProductId == dbProduct.Id) == null)
+            {
+                basketItems.Add(item);
+            }
+            else
+            {
+                basketItems.Find(bi => bi.ProductId == dbProduct.Id).Count++;
+            }
+            Response.Cookies.Append("Basket",JsonConvert.SerializeObject(basketItems));
+            return RedirectToAction(nameof(Index));
+        }
+        public IActionResult GetBasket()
+        {
+            return Json(JsonConvert.DeserializeObject<List<BasketVM>>(Request.Cookies["basket"]));
+        }
+        //public IActionResult GetSession()
+        //{
+        //    return Json(HttpContext.Session.GetString("name")+" "+Request.Cookies["surname"]);
+        //}
     }
 }
