@@ -3,6 +3,7 @@ using Geco.Models;
 using Geco.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Collections.Generic;
@@ -21,6 +22,13 @@ namespace Geco.Controllers
         {
             //ViewBag.ProductCount = products.Count();
             return View();
+        }
+        public IActionResult Details(int? id)
+        {
+            if (id <= 0 || id==null) return BadRequest();
+            Product product = _context.Products.Where(p => p.Id == id).Include(p=>p.ProductImages).Include(p=>p.Category).Include(p=>p.ProductColors).ThenInclude(pc=>pc.Color).SingleOrDefault();
+            if (product==null) return NotFound();
+            return View(product);
         }
         public IActionResult LoadMore(int skip)
         {

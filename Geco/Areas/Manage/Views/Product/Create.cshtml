@@ -68,7 +68,11 @@
                                 <span class="text-primary" asp-validation-for="Photos"></span>
                             </div>
                             <div class="mb-3">
-                                <select class="select2 form-control js-example-basic-single" asp-for="CategoryId" asp-items="@(new SelectList(ViewBag.Categories,nameof(Category.Id),nameof(Category.Name)))">
+                                <select class="select2 form-control js-example-basic-single" multiple name="ColorIds" asp-items="@ViewBag.Colors">
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <select class="select2 form-control js-example-basic-single" asp-for="CategoryId" asp-items="@ViewBag.Categories">
                                     <option disabled selected>CATEGORY</option>
                                 </select>
                             </div>

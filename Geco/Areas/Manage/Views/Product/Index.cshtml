@@ -1,6 +1,7 @@
-﻿@model List<Product>
+﻿@model PaginationVM<Product>
 @{
     ViewData["Title"] = "Index";
+    int order = (Model.ActivePage-1)*10+1;
 }
 
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModal" aria-hidden="true">
@@ -138,7 +139,8 @@
             <div class="card mb-2 bg-transparent no-shadow d-none d-md-block">
                 <div class="card-body pt-0 pb-0 sh-3">
                     <div class="row g-0 h-100 align-content-center">
-                        <div class="col-12 col-md-1 d-flex align-items-center mb-2 mb-md-0 text-muted text-small">ID</div>
+                        <div class="col-12 col-md-1 d-flex align-items-center mb-2 mb-md-0 text-muted text-small">№</div>
+                        <div class="col-12 col-md-1 d-flex align-items-center mb-2 mb-md-0 text-muted text-small">Image</div>
                         <div class="col-6 col-md-1 d-flex align-items-center text-alternate text-medium text-muted text-small">NAME</div>
                         <div class="col-6 col-md-1 d-flex align-items-center text-alternate text-medium text-muted text-small">PRICE</div>
                         <div class="col-6 col-md-1 d-flex align-items-center text-alternate text-medium text-muted text-small">RAITING</div>
@@ -150,12 +152,22 @@
                 </div>
             </div>
             <div>
-                @foreach (var item in Model)
+                @foreach (var item in Model.Items)
                 {
                     <div class="card mb-2">
                         <div class="card-body pt-0 pb-0 sh-21 sh-md-8">
                             <div class="row g-0 h-100 align-content-center">
-                                <div class="col-11 col-md-1 d-flex flex-column justify-content-center mb-2 mb-md-0 h-md-100 position-relative">
+                                <div class="col-12 col-md-1 d-flex flex-column justify-content-center mb-2 mb-md-0 h-md-100 position-relative">
+                                    <div class="text-muted text-small d-md-none"></div>
+                                    <div class="text-alternate">
+                                        <span>
+                                            @(order++)
+                                            @*@order*@
+                                        </span>
+                                    </div>
+                                    @*<a href="Orders.Detail.html" class="text-truncate h-100 d-flex align-items-center">@item.Id</a>*@
+                                </div>
+                                <div class="col-12 col-md-1 d-flex flex-column justify-content-center mb-2 mb-md-0 h-md-100 position-relative">
                                     <div class="text-muted text-small d-md-none">Image</div>
                                     @if (item.ProductImages.Where(pi => pi.IsMain == true).FirstOrDefault() != null)
                                     {
@@ -214,19 +226,26 @@
     <div class="d-flex justify-content-center">
         <nav>
             <ul class="pagination">
-                <li class="page-item disabled">
-                    <a class="page-link shadow" href="#" tabindex="-1" aria-disabled="true">
-                        <i data-cs-icon="chevron-left"></i>
-                    </a>
-                </li>
-                <li class="page-item active"><a class="page-link shadow" href="#">1</a></li>
-                <li class="page-item"><a class="page-link shadow" href="#">2</a></li>
-                <li class="page-item"><a class="page-link shadow" href="#">3</a></li>
-                <li class="page-item">
-                    <a class="page-link" href="#">
-                        <i data-cs-icon="chevron-right"></i>
-                    </a>
-                </li>
+                @if (Model.ActivePage != 1)
+                {
+                    <li class="page-item">
+                        <a class="page-link shadow" asp-controller="Product" asp-action="Index" asp-route-page="@(Model.ActivePage-1)" tabindex="-1" aria-disabled="true">
+                            @Html.Raw("<")
+                        </a>
+                    </li>
+                }
+                @for (int i = 1; i <= Model.PageCount; i++)
+                {
+                    <li class="page-item @(Model.ActivePage == i?"active":"")"><a asp-controller="Product" asp-action="Index" asp-route-page="@i" class="page-link shadow">@i</a></li>
+                }
+                @if (Model.ActivePage < Model.PageCount)
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-controller="Product" asp-action="Index" asp-route-page="@(Model.ActivePage+1)">
+                            >
+                        </a>
+                    </li>
+                }
             </ul>
         </nav>
     </div>

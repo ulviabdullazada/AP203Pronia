@@ -3,7 +3,6 @@ using Geco.Models;
 using Geco.Utilies;
 using Geco.Utilies.File;
 using Geco.ViewModels;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -26,14 +25,24 @@ namespace Geco.Areas.Manage.Controllers
             _context = context;
         }
         // GET: ProductController
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(int page=1)
         {
-            List<Product> products = await _context.Products.Include(p=>p.Category).Include(p=>p.ProductImages).ToListAsync();
-            return View(products);
+            int pageCount = GetPageCount(_context.Products.Count());
+            if (page<1 || page> pageCount)
+            {
+                page = 1;
+            }
+            List<Product> products = await _context.Products.Skip((page-1)*10).Take(10).Include(p=>p.Category).Include(p=>p.ProductImages).ToListAsync();
+            PaginationVM<Product> pagination = new PaginationVM<Product>
+            {
+                Items = products,
+                PageCount = pageCount,
+                ActivePage = page
+            };
+            return View(pagination);
         }
-
         // GET: ProductController/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(int? id)
         {
             return View();
         }
@@ -44,16 +53,18 @@ namespace Geco.Areas.Manage.Controllers
             //ProductCategoryVM pcvm = new ProductCategoryVM();
             //pcvm.Categories = _context.Categories.ToList();
             //return View(pcvm);
-            ViewBag.Categories = _context.Categories.ToList();
+            ViewBag.Categories = new SelectList(_context.Categories.ToList(),"Id","Name");
+            ViewBag.Colors = new SelectList(_context.Colors.ToList(),"Id","Name");
             return View();
         }
 
         // POST: ProductController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(Product product)
+        public async Task<ActionResult> Create(Product product,List<int> ColorIds)
         {
-            ViewBag.Categories = _context.Categories.ToList();
+            ViewBag.Categories = new SelectList(_context.Categories.ToList(), "Id", "Name");
+            ViewBag.Colors = new SelectList(_context.Colors.ToList(), "Id", "Name");
             if (!ModelState.IsValid)
             {
                 return View();
@@ -94,6 +105,17 @@ namespace Geco.Areas.Manage.Controllers
                 IsMain = true,
                 Product = product
             });
+            List<ProductColor> pc = new List<ProductColor>();
+            foreach (int id in ColorIds)
+            {
+                Color clr = _context.Colors.Find(id);
+                if (clr == null) continue;
+                pc.Add(new ProductColor{
+                    Color = clr,
+                    Product = product
+                });
+            }
+            product.ProductColors = pc;
             await _context.Products.AddAsync(product);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -193,6 +215,9 @@ namespace Geco.Areas.Manage.Controllers
                 }
             }
             return "";
+        }
+        private int GetPageCount(int count) {
+            return (int)Math.Ceiling((double)count / 10);
         }
     }
 }
